@@ -57,6 +57,11 @@
             <artifactId>spring-boot-starter-web</artifactId>
             <version>1.4.1.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.cloudfoundry.identity</groupId>
+            <artifactId>cloudfoundry-identity-client-lib</artifactId>
+            <version>3.9.1</version>
+        </dependency>
 
     </dependencies>
     <build>

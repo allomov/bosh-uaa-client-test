@@ -7,6 +7,10 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.cloudfoundry.identity.client.UaaContext;
+import org.cloudfoundry.identity.client.UaaContextFactory;
+import org.cloudfoundry.identity.client.token.GrantType;
+import org.cloudfoundry.identity.client.token.TokenRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,8 +41,32 @@ public class UaaClient {
     @Autowired
     private RestTemplate restTemplate;
 
-    @RequestMapping("/token2")
+    @RequestMapping("/get-token-with-uaa-client")
     public String getTokenWithUaaClient() throws Exception {
+        Map<String,String> env = System.getenv();
+        String uaaHost = env.get("UAA_HOST");
+        String boshHost = env.get("BOSH_HOST");
+        String user = env.get("BOSH_USER");
+        String password = env.get("BOSH_PASSWORD");
+        String uaaUrl = "https://" + uaaHost + ":8443";
+
+        UaaContextFactory factory = UaaContextFactory.factory(new URI(uaaUrl))
+                        .authorizePath("/oauth/authorize")
+                        .tokenPath("/oauth/token");
+        TokenRequest passwordGrant = factory.tokenRequest()
+                .setClientId("bosh_cli")
+                .setClientSecret("")
+                .setGrantType(GrantType.PASSWORD)
+                .setUsername(user)
+                .setPassword(password)
+                .withIdToken();
+        UaaContext context = factory.authenticate(passwordGrant);
+        String token = context.getToken().getIdTokenValue();
+        return token;
+    }
+
+    @RequestMapping("/get-token-with-httppost")
+    public String getTokenWithUaaHttpPost() throws Exception {
         Map<String,String> env = System.getenv();
         String uaaHost = env.get("UAA_HOST");
         String boshHost = env.get("BOSH_HOST");
@@ -78,7 +106,8 @@ public class UaaClient {
         return null;
     }
 
-    @RequestMapping("/token1")
+    // NOTICE: at the moment this returns an error
+    @RequestMapping("/get-token-with-resttemplate")
     public String getTokenSimple() throws Exception {
         Map<String,String> env = System.getenv();
         String uaaHost = env.get("UAA_HOST");
