@@ -25,17 +25,17 @@ import java.security.SecureRandom;
 @ComponentScan("com.altoros")
 public class AppConfiguration {
 
-    @Bean
-    String uaaHost(@Value("${uaa.host}") String host) { return host; }
+    @Value("${uaa.host}")
+    String uaaHost;
 
-    @Bean
-    String boshHost(@Value("${bosh.host}") String host) { return host; }
+    @Value("${bosh.host}")
+    String boshHost;
 
-    @Bean
-    String boshUser(@Value("${bosh.user}") String boshPassword) { return boshPassword; }
+    @Value("${bosh.user}")
+    String boshUser;
 
-    @Bean
-    String boshPassword(@Value("${bosh.password}") String boshPassword) { return boshPassword; }
+    @Value("${bosh.password}")
+    String boshPassword;
 
     @Autowired
     @Bean
