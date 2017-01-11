@@ -1,6 +1,7 @@
 package com.altoros;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,6 +24,18 @@ import java.security.SecureRandom;
 @Configuration
 @ComponentScan("com.altoros")
 public class AppConfiguration {
+
+    @Bean
+    String uaaHost(@Value("${uaa.host}") String host) { return host; }
+
+    @Bean
+    String boshHost(@Value("${bosh.host}") String host) { return host; }
+
+    @Bean
+    String boshUser(@Value("${bosh.user}") String boshPassword) { return boshPassword; }
+
+    @Bean
+    String boshPassword(@Value("${bosh.password}") String boshPassword) { return boshPassword; }
 
     @Autowired
     @Bean
