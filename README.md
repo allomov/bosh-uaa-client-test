@@ -12,6 +12,16 @@ To use UAA with CA certs you'll need to generate java keystore with the followin
 ```
 keytool -genkeypair -import -trustcacerts -alias bosh-root -file rootCA.pem -storepass <change-me> -keystore clientsidestore.jks
 ```
+
+Also you'll need to set following environment variables:
+
+| Endpoint | Description
+| --- | -----------
+| `UAA_HOST` | UAA host
+| `BOSH_HOST` | BOSH host
+| `BOSH_USER` | BOSH username
+| `BOSH_PASSWORD` | BOSH password
+
 After that you'll be able to run the app with following system properties:
 ```
 -Djava.net.preferIPv4Stack=true -Djavax.net.ssl.trustStore=/path/to/clientsidestore.jks -Djavax.net.ssl.trustStorePassword=<change-me>

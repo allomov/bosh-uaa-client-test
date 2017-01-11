@@ -1,0 +1,4 @@
+export UAA_HOST=x.x.x.x
+export BOSH_PASSWORD=...
+export BOSH_HOST=x.x.x.x
+export BOSH_USER=admin
